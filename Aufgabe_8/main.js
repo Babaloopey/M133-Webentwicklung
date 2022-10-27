@@ -94,12 +94,7 @@ function updateToDoListOnScreen() {
 
 // erledigtStatus wechseln
 function adjustErledigtState(todo){
-  if(todo.erledigt == false){
-    todo.erledigt = true;
-  }
-  else{
-    todo.erledigt = false;
-  }
+  todo.erledigt = todo.erledigt? false : true;
 }
 
 
