@@ -24,7 +24,7 @@ class ToDo extends EventTarget {
     this.#erledigt = erledigt;
   }
 
-  element() {
+  element(index) {
     const listElement = document.createElement('li');
     const divElement = document.createElement('div');
     const checkboxElement = document.createElement('input');
@@ -38,6 +38,7 @@ class ToDo extends EventTarget {
     divElement.appendChild(buttonElement);
 
     checkboxElement.setAttribute('type', 'checkbox');
+    checkboxElement.setAttribute('id', `${index}`);
 
     buttonElement.className = 'loeschen';
 
@@ -49,6 +50,7 @@ class ToDo extends EventTarget {
       divElement.className = 'erledigt';
     }
 
+
     buttonElement.addEventListener('click', () => {
       this.dispatchEvent(new Event('loeschen'));
     });
@@ -57,12 +59,7 @@ class ToDo extends EventTarget {
   }
 }
 
-
-let todos = [
-  new ToDo('Zugticket kaufen', false),
-  new ToDo('Wäsche waschen', true),
-  new ToDo('Hausaufgaben machen', true),
-];
+let todos = [];
 
 function updateToDoListOnScreen() {
   const todoListElement = document.getElementById('todolist');
@@ -71,41 +68,49 @@ function updateToDoListOnScreen() {
   todoListElement.innerHTML = '';
 
   // ToDo's einfügen
-  for (const todo of todos) {
-    const toDoListEntry = todo.element();
+  todos.forEach((todo, i) => {
+    let toDoListEntry = todo.element(i);
     todoListElement.appendChild(toDoListEntry);
-  }
+  })
 
   // offene ToDo's
   const offeneToDos = todos.filter((offen) => !offen.erledigt);
   const elementAnzahl = document.getElementById('anzahl');
   elementAnzahl.textContent = `${offeneToDos.length} ToDo's offen`;
+
+  // Klick auf Checkbox auf Objekt anwenden
+  const checkboxElements = document.querySelectorAll('[type="checkbox"]');
+  checkboxElements.forEach((e) => {
+
+    e.addEventListener('click', (event) => {
+      id = e.getAttribute('id');
+
+      adjustErledigtState(todos[id])
+      updateToDoListOnScreen();
+    })
+
+  })
 }
 
+// erledigtStatus wechseln
+function adjustErledigtState(todo){
+  if(todo.erledigt == false){
+    todo.erledigt = true;
+  }
+  else{
+    todo.erledigt = false;
+  }
+}
 
 
 document.addEventListener('DOMContentLoaded', (event) => {
   updateToDoListOnScreen();
 
+  // aufraeumen löscht alle Objekte mit erledigt = true
   const button = document.getElementById('aufraeumen');
-  button.addEventListener('click', (e) => {
-    console.log("click");
-    let arr = [];
-    todos.forEach(e => {
-      if(e.erledigt == true){
-        arr.push(e);
-      }
-    
-    })
-    console.log(arr);
-      todos = todos.filter( function( el ) {
-      return arr.indexOf( el ) < 0;
-    } );
-    updateToDoListOnScreen();
-  }
-  )
-
-  
+  button.addEventListener('click', (e) => {    
+    removeErledigteTodoFromTodos();
+  })
 
   const neuesToDoElement = document.getElementById('neuesToDo');
   neuesToDoElement.addEventListener('keydown', (event) => {
@@ -126,5 +131,27 @@ document.addEventListener('DOMContentLoaded', (event) => {
   });
 });
 
+function removeErledigteTodoFromTodos(){
+  let elementsToBeRemoved = selectElementsToBeRemoved(todos);
+  todos = removeElementsFromArray(todos, elementsToBeRemoved)
+  
+  updateToDoListOnScreen();
+}
 
+// helperFunktionen für elemententauswahl und entfernung
+function selectElementsToBeRemoved(todos){
+  let elementsToBeRemoved = [];
+  todos.forEach(e => {
+    if (e.erledigt == true) {
+      elementsToBeRemoved.push(e);
+    }
+  })
+  return elementsToBeRemoved;
+}
 
+function removeElementsFromArray(array, elementsToBeRemoved){
+  array = todos.filter(function (el) {
+    return elementsToBeRemoved.indexOf(el) < 0;
+  });
+  return array;
+}
