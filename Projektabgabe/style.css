@@ -1,0 +1,83 @@
+body {
+  width: auto;
+  min-width: 230px;
+  max-width: 550px;
+  margin: 0 auto;
+  background: #f5f5f5;
+}
+
+.todoapp {
+  margin: 140px 0 40px 0;
+  position: relative;
+  background: #ffffff;
+}
+
+.todoapp h1 {
+  position: absolute;
+  top: -140px;
+  width: 100%;
+  color: red;
+  text-align: center;
+  font-size: 50px;
+}
+
+#neuesToDo {
+  padding: 15px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.todos {
+  position: relative;
+  border-top: 1px solid #000000;
+  border-left: 1px solid #000000;
+  border-right: 1px solid #000000;
+}
+
+.todos ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.todos ul li {
+  position: relative;
+  font-size: 16px;
+  border-bottom: 1px solid #000000;
+}
+
+.todos ul li div {
+  display: block;
+  padding: 10px;
+}
+
+.todos ul li div span {
+  padding-left: 10px;
+  font-size: 20px;
+}
+
+.todos ul li div.erledigt span {
+  text-decoration: line-through;
+}
+
+button.loeschen {
+  margin: 0 auto;
+  position: absolute;
+  right: 10px;
+}
+
+footer {
+  padding: 10px 15px;
+  text-align: center;
+  height: 20px;
+}
+
+footer #anzahl {
+  float: left;
+  text-align: left;
+}
+
+footer button {
+  float: right;
+}
