@@ -8,23 +8,25 @@ export async function listAction(request, response){
     response.send(body);
 }
 
+export async function getOneAction(request, response){
+    const id = request.params.id;
+    const body = get(id);
+    response.send(JSON.stringify(body));
+}
+
 export async function removeAction(request, response){
-    console.log(request)
     const id = parseInt(request.params.id, 10);
-    console.log("LOOOOOL" + id)
-    await remove(id);
+    remove(id);
     response.redirect(request.baseUrl);
 }
 
 export async function formAction(request, response){
-    let movie = { id: '', title: '', year: ''};
+    let movie = { id:'', title: '', year: ''};
 
-    if(request.params.id){
-        movie = await get(parseInt(request.params.id, 10));
+    if (request.params.id) {
+        movie = get(parseInt(request.params.id));
     }
-
-    console.log(movie);
-
+   
     const body = form(movie);
     response.send(body);
 }

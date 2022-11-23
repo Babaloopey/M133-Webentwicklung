@@ -11,7 +11,7 @@ let data = [
 ];
 
 function getNextId() {
-  return Math.max(...(data.map((movie) => movie.id) + 1));
+  return data.length > 0 ? Math.max(...(data.map((movie) => movie.id))) + 1 : 1;
 }
 
 function insert(movie) {
@@ -20,7 +20,12 @@ function insert(movie) {
 }
 
 function update(movie) {
-  // TODO
+  data.map(m => {
+    if (m.id == movie.id) {
+      m.title = movie.title;
+      m.year = movie.year;
+    }
+  });
 }
 
 export function getAll() {
@@ -28,21 +33,19 @@ export function getAll() {
 }
 
 export function get(id) {
-  // TODO
+  return data.find(movie => movie.id == id) || {id: id, title: "", year: ""};
 }
 
 export function remove(id) {
- data.filter(function(item){
-    return item.id = id;
- })  
+ data = data.filter(e => {return e.id != id});
 }
 
-  export function save(movie) {
-    if(movie.id === ''){
-        insert(movie);
-    } else {
-        update(movie);
-    }
-    return Promise.resolve();
-
+export function save(movie) {
+  console.log(`Titel: ${movie.title}, Jahr: ${movie.year}, Id: ${movie.id}`)
+  if(!movie.id){
+    insert(movie);
+  } else {
+    update(movie);
   }
+  return Promise.resolve();
+}

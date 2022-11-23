@@ -1,7 +1,7 @@
 {
   "name": "m131-units",
   "version": "1.0.0",
-  "description": "",
+  "description": "MVC Webanwendung",
   "main": "index.js",
   "type": "module",
   "scripts": {
